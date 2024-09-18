@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 class Datas(BaseModel):
-    value: int
+    value: str
 
 @app.get("/")
 async def get():
