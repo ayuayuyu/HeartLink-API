@@ -3,6 +3,8 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from src.WsManager import WsManager
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Union
+from pydantic import BaseModel
 
 app = FastAPI()
 manager = WsManager()
@@ -15,9 +17,17 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class datas(BaseModel):
+    name: str
+    value: int
+    
 @app.get("/")
 async def get():
     return HTMLResponse("Hello World!")
+
+@app.post("/hartbeat/")
+async def receive_data(data: datas):
+    return {"心拍数: ":data}
 
 @app.post("/msg/{room_id}")
 async def msg(msg: str, room_id: str) -> None:
