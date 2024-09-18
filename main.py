@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 class Datas(BaseModel):
-    value: str
+    heartRate: str
 
 @app.get("/")
 async def get():
