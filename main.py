@@ -26,8 +26,8 @@ async def get():
 
 @app.post("/data")
 async def create_data(data: Datas):
-    print(f"心拍数: {data.value}")
-    return {"心拍数": data.value}
+    print(f"心拍数: {data.heartRate}")
+    return {"心拍数": data.heartRate}
 
 
 @app.post("/msg/{room_id}")
