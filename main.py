@@ -17,17 +17,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-class datas(BaseModel):
-    name: str
+class Datas(BaseModel):
     value: int
-    
+
 @app.get("/")
 async def get():
     return HTMLResponse("Hello World!")
 
-@app.post("/hartbeat/")
-async def receive_data(data: datas):
-    return {"心拍数: ":data}
+@app.post("/data")
+async def create_data(data: Datas):
+    print(f"心拍数: {data.value}")
+    return {"心拍数": data.value}
+
 
 @app.post("/msg/{room_id}")
 async def msg(msg: str, room_id: str) -> None:
