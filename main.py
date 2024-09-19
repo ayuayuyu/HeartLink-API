@@ -26,13 +26,11 @@ async def get():
 
 @app.post("/data")
 async def create_data(data: Datas):
-    global heart
     print(f"心拍数: {data.heartRate}")
-    heart = data.heartRate
+    manager.set_heart(data.heartRate)  # 心拍数をマネージャーにセット
     # WebSocketを使ってクライアントに心拍数をブロードキャスト
-    print(f"送信する心拍数: {heart}")
     try:
-        await manager.broadcast(heart, '12345')
+        await manager.broadcast(manager.get_heart(), '12345')
     except Exception as e:
         print(f"Error broadcasting message: {e}")
     return {"status": "Message sent via WebSocket"}
@@ -46,9 +44,9 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         while True:
             # クライアントからのメッセージ受信
             await websocket.receive_text()
-            print(f"送信する心拍数: {heart}")
+            print(f"送信する心拍数: {manager.get_heart()}")
             # ルーム内の全クライアントにブロードキャスト
-            await manager.broadcast(f"{heart}", room_id)
+            await manager.broadcast(manager.get_heart(), room_id)
     except WebSocketDisconnect:
         manager.disconnect(websocket, room_id)
     finally:
