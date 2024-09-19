@@ -10,13 +10,12 @@ manager = WsManager()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 特定のオリジンを許可する場合はここで指定します
+    allow_origins=["*"],  # 運用時には特定のオリジンを指定
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-heart :str= '0'
 class Datas(BaseModel):
     heartRate: str
 
@@ -24,16 +23,18 @@ class Datas(BaseModel):
 async def get():
     return HTMLResponse("Hello World!")
 
-    
+
 @app.post("/data")
 async def create_data(data: Datas):
     global heart
     print(f"心拍数: {data.heartRate}")
     heart = data.heartRate
-    # 受け取ったデータをWebSocketを使ってクライアントに送信
-     # ここでデバッグ用に送信しようとしているデータを確認
+    # WebSocketを使ってクライアントに心拍数をブロードキャスト
     print(f"送信する心拍数: {heart}")
-    await manager.broadcast(heart,12345)
+    try:
+        await manager.broadcast(heart, '12345')
+    except Exception as e:
+        print(f"Error broadcasting message: {e}")
     return {"status": "Message sent via WebSocket"}
 
 
@@ -43,12 +44,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
     await manager.connect(websocket, room_id)
     try:
         while True:
-            # クライアントからメッセージを受信
+            # クライアントからのメッセージ受信
             await websocket.receive_text()
             print(f"送信する心拍数: {heart}")
-            # クライアントから受信したメッセージをルーム内の全クライアントにブロードキャスト
+            # ルーム内の全クライアントにブロードキャスト
             await manager.broadcast(f"{heart}", room_id)
     except WebSocketDisconnect:
         manager.disconnect(websocket, room_id)
-        
-
+    finally:
+        try:
+            await websocket.close()
+        except Exception as e:
+            print(f"Error during closing handshake: {e}")
