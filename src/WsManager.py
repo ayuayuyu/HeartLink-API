@@ -3,8 +3,6 @@ from fastapi import WebSocket
 
 class WsManager:
     def __init__(self):
-        self.heart = '0'  # 初期心拍数
-        self.heartMax = '0'#心拍数の最大値
         # 複数の部屋を管理するために辞書を使用します
         self.active_connections: Dict[str, List[WebSocket]] = {}
 
@@ -27,14 +25,4 @@ class WsManager:
             except:
                 self.active_connections.remove(connection)
 
-    def set_heart(self, heart_value: str):
-        self.heart = heart_value
-
-    def get_heart(self):
-        return self.heart
     
-    def set_heartMax(self, heart_value: str):
-        self.heartMax = heart_value
-
-    def get_heartMax(self):
-        return self.heartMax
