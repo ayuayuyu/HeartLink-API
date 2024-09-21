@@ -18,16 +18,31 @@ app.add_middleware(
 
 class Datas(BaseModel):
     heartRate: str
+    
+class Reset(BaseModel):
+    value: str
 
 @app.get("/")
 async def get():
     return HTMLResponse("Hello World!")
 
+@app.post("/reset")
+async def reset_endpoint(reset: Reset):
+    manager.set_heart(reset.value)
+    manager.set_heartMax(reset.value)
+    print(f"heartMax: {manager.get_heartMax()} , heartRate: {manager.get_heart()}")
+    
+@app.post("/max")
+async def max_endpoint():
+    return manager.get_heartMax()
 
 @app.post("/data")
 async def create_data(data: Datas):
     print(f"心拍数: {data.heartRate}")
     manager.set_heart(data.heartRate)  # 心拍数をマネージャーにセット
+    if manager.get_heartMax() < manager.get_heart():
+        manager.set_heartMax(manager.get_heart())
+        print(f"heartMax: {manager.get_heartMax()}")
     # WebSocketを使ってクライアントに心拍数をブロードキャスト
     try:
         await manager.broadcast(manager.get_heart(), '12345')
