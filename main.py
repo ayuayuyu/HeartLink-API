@@ -26,12 +26,12 @@ class Reset(BaseModel):
 async def get():
     return HTMLResponse("Hello World!")
 
-@app.post("/reset")
-async def reset_endpoint(reset: Reset):
-    manager.set_heart(reset.value)
-    manager.set_heartMax(reset.value)
-    await manager.broadcast(manager.get_heart(),'12345')
-    print(f"heartMax: {manager.get_heartMax()} , heartRate: {manager.get_heart()}")
+# @app.post("/reset")
+# async def reset_endpoint(reset: Reset):
+#     manager.set_heart(reset.value)
+#     manager.set_heartMax(reset.value)
+#     await manager.broadcast(manager.get_heart(),'12345')
+#     print(f"heartMax: {manager.get_heartMax()} , heartRate: {manager.get_heart()}")
     
 @app.post("/max")
 async def max_endpoint():
@@ -41,7 +41,7 @@ async def max_endpoint():
 async def create_data(data: Datas):
     print(f"心拍数: {data.heartRate}")
     manager.set_heart(data.heartRate)  # 心拍数をセットする
-    if manager.get_heartMax() < manager.get_heart():
+    if int(manager.get_heartMax()) < int(manager.get_heart()):
         manager.set_heartMax(manager.get_heart())
         print(f"heartMax: {manager.get_heartMax()}")
     # WebSocketを使ってクライアントに心拍数をブロードキャスト
@@ -58,6 +58,9 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             # クライアントからのメッセージ受信
             data = await websocket.receive_text()
             print(f"送信する心拍数: {data}")
+            # リセットボタンを押さずともwebsocket.sendで送られてきた値を０にしてそれを入れればリセットがいらなくなる
+            manager.set_heart(data)
+            manager.set_heartMax(data)
             # ルーム内の全クライアントにブロードキャスト
             await manager.broadcast(data, room_id)
     except WebSocketDisconnect:
