@@ -21,6 +21,16 @@ class Datas(BaseModel):
     
 class Reset(BaseModel):
     value: str
+    
+    
+def max():
+    try:
+        if float(manager.get_heartMax()) < float(manager.get_heart()):
+            manager.set_heartMax(manager.get_heart())
+    except ValueError:
+        if int(manager.get_heartMax()) < int(manager.get_heart()):
+            manager.set_heartMax(manager.get_heart())
+        
 
 @app.get("/")
 async def get():
@@ -41,9 +51,8 @@ async def max_endpoint():
 async def create_data(data: Datas):
     print(f"心拍数: {data.heartRate}")
     manager.set_heart(data.heartRate)  # 心拍数をセットする
-    if int(manager.get_heartMax()) < int(manager.get_heart()):
-        manager.set_heartMax(manager.get_heart())
-        print(f"heartMax: {manager.get_heartMax()}")
+    max()
+    print(f"heartMax: {manager.get_heartMax()}")
     # WebSocketを使ってクライアントに心拍数をブロードキャスト
     await manager.broadcast(manager.get_heart(),'12345')
         
