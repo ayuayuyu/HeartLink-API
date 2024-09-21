@@ -26,7 +26,7 @@ class filter:
         return self.heartMin
     
     #最大値比較
-    def max(self,heart_value: str):
+    def max(self, heart_value: str):
         try:
             #str型をfloat型に変換して比較する
             if float(self.heartMax) < float(self.heart):
@@ -38,25 +38,25 @@ class filter:
         print(f"heartMax: {self.heartMax}")
         
     #最小値比較
-    def min(self,heart_value: str):
+    def min(self, heart_value: str):
         try:
             #str型をfloat型に変換して比較する
-            if float(self.heartMin) < float(self.heart):
+            if float(self.heartMin) > float(self.heart):
                 self.set_heartMin(heart_value)
         except ValueError:
             #str型をint型に変換して比較する
-            if int(self.heartMin) < int(self.heart):
+            if int(self.heartMin) > int(self.heart):
                 self.set_heartMin(heart_value)
         print(f"heartMin: {self.heartMin}")
     
     #すべてセットする
-    def allSet(self,heart_value: str):
+    def allSet(self, heart_value: str):
         self.set_heart(heart_value)
         self.max(heart_value)
         self.min(heart_value)
         
     #すべて初期値にする
-    def reSet(self,heart_value: str):
+    def reSet(self, heart_value: str):
         self.set_heart(heart_value)
         self.set_heartMax(heart_value)
         self.set_heartMin("100000")

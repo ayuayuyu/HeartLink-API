@@ -9,13 +9,15 @@ from src.models import Datas
 
 app = FastAPI()
 manager = WsManager()
+filters = filter()
 
+# CORSの設定を追加
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 運用時には特定のオリジンを指定
+    allow_origins=["*"],  # すべてのオリジンを許可する場合
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # すべてのHTTPメソッドを許可 (GET, POSTなど)
+    allow_headers=["*"],  # すべてのHTTPヘッダーを許可
 )
     
 
@@ -32,10 +34,10 @@ async def max_endpoint():
 async def create_data(data: Datas):
     print(f"心拍数: {data.heartRate}")
     # 心拍数をセットする(通常、最大値、最小値)
-    filter.allSet(data.heartRate)
+    filters.allSet(data.heartRate)
     # WebSocketに心拍数を送る
-    await manager.broadcast(filter.get_heart,'12345')
-    return filter.get_heart()
+    await manager.broadcast(data.heartRate,'12345')
+    return filters.get_heart()
 
 
 @app.websocket("/ws/{room_id}")
@@ -47,8 +49,15 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
             data = await websocket.receive_text()
             print(f"送信する心拍数: {data}")
             # 通常、最大値、最小値のすべての値をリセットする
-            filter.reSet(data)
+            filters.reSet(data)
+            
+            # 送信するデータの構築 (心拍数の現在値、最大値、最小値)
+            # broadcast_data = {
+            #     "current_heart": filters.get_heart,
+            #     "max_heart": filters.get_heartMax,
+            #     "min_heart": filters.get_heartMin
+            # }
             # ルーム内の全クライアントにブロードキャスト
-            await manager.broadcast(data, room_id)
+            await manager.broadcast(data , room_id)
     except WebSocketDisconnect:
         manager.disconnect(websocket, room_id)
