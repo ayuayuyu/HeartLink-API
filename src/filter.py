@@ -29,7 +29,7 @@ class filter:
     def set_roomId(self, room_id:str):
         self.roomId = room_id
     
-    def get_roomId(self, room_id:str):
+    def get_roomId(self):
         return self.roomId
     
     #最大値比較
