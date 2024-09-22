@@ -36,12 +36,13 @@ async def create_data(data: Datas):
     # 心拍数をセットする(通常、最大値、最小値)
     filters.allSet(data.heartRate)
     # WebSocketに心拍数を送る
-    await manager.broadcast(data.heartRate,'12345')
+    await manager.broadcast(data.heartRate,filters.get_roomId)
     return filters.get_heart()
 
 
 @app.websocket("/ws/{room_id}")
 async def websocket_endpoint(websocket: WebSocket, room_id: str):
+    filters.set_roomId(room_id)
     await manager.connect(websocket, room_id)
     try:
         while True:

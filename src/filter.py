@@ -5,6 +5,7 @@ class filter:
         self.heart = '0'  # 初期心拍数
         self.heartMax = '0'#心拍数の最大値
         self.heartMin = '1000000'#心拍数の最小値
+        self.roomId = "0"
         
     #心拍数のセット
     def set_heart(self, heart_value: str):
@@ -24,6 +25,12 @@ class filter:
     #心拍数の最小値を取得
     def get_heartMin(self):
         return self.heartMin
+    
+    def set_roomId(self, room_id:str):
+        self.roomId = room_id
+    
+    def get_roomId(self, room_id:str):
+        return self.roomId
     
     #最大値比較
     def max(self, heart_value: str):
