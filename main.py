@@ -2,10 +2,12 @@ from typing import List
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+import json
 
 from src.WsManager import WsManager
 from src.filter import filter
 from src.models import Datas
+from src.models import Device
 
 app = FastAPI()
 manager = WsManager()
@@ -20,25 +22,42 @@ app.add_middleware(
     allow_headers=["*"],  # すべてのHTTPヘッダーを許可
 )
     
-
 @app.get("/")
 async def get():
     return HTMLResponse("Hello World!")
 
-    
-@app.post("/max")
-async def max_endpoint():
-    return manager.get_heartMax()
-
+@app.post("/id")
+# デバイスのIDを取得するエンドポイント
+async def id_endpoint(device:Device):
+    #一つ目のデバイスIDを取得する
+    if filters.get_count() == 0 :
+        filters.set_deviceId_1(device.id)
+        print(f"id: {device.id}")
+        filters.set_count(1)
+        return {"player": "1"}
+    #二つ目のデバイスIDを取得する
+    elif filters.get_count() == 1:
+        filters.set_deviceId_2(device.id)
+        filters.set_count(2)
+        return {"player": "2"}
+        
 @app.post("/data")
-async def create_data(data: Datas):
+#それぞれの心拍数を取得するエンドポイント
+async def data_endpoint(data: Datas):
     print(f"心拍数: {data.heartRate}")
-    # 心拍数をセットする(通常、最大値、最小値)
-    filters.allSet(data.heartRate)
-    # WebSocketに心拍数を送る
-    print(f"roomID:{filters.get_roomId()}")
-    await manager.broadcast(data.heartRate,filters.get_roomId())
-    return filters.get_heart()
+    #それぞれのデバイスIDと心拍をdictで一つにまとめる
+    manager.device_data[data.id]= data.heartRate
+    
+    #JSON方式
+    json_data = {
+        "id1": filters.get_deviceId_1(),
+        "heartRate1": manager.device_data.get(filters.get_deviceId_1()),
+        "id2": filters.get_deviceId_2(),
+        "heartRate2": manager.device_data.get(filters.get_deviceId_2()),
+    }
+    # 全クライアントにメッセージを送信(JSON方式)
+    await manager.broadcast(json.dumps(json_data),filters.get_roomId())
+    return {"message":"HartRate"}
 
 
 @app.websocket("/ws/{room_id}")
@@ -49,17 +68,14 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
         while True:
             # クライアントからのメッセージ受信
             data = await websocket.receive_text()
-            print(f"送信する心拍数: {data}")
-            # 通常、最大値、最小値のすべての値をリセットする
-            filters.reSet(data)
-            
-            # 送信するデータの構築 (心拍数の現在値、最大値、最小値)
-            # broadcast_data = {
-            #     "current_heart": filters.get_heart,
-            #     "max_heart": filters.get_heartMax,
-            #     "min_heart": filters.get_heartMin
-            # }
-            # ルーム内の全クライアントにブロードキャスト
-            await manager.broadcast(data , room_id)
+            #JSON形式
+            json_data = {
+                "id1": filters.get_deviceId_1(),
+                "heartRate1": data,
+                "id2": filters.get_deviceId_2(),
+                "heartRate2": data,
+            }
+            # ルーム内の全クライアントにブロードキャスト(JSON形式)
+            await manager.broadcast(json.dumps(json_data), room_id)
     except WebSocketDisconnect:
         manager.disconnect(websocket, room_id)
