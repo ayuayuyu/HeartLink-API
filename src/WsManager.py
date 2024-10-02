@@ -3,8 +3,11 @@ from fastapi import WebSocket
 
 class WsManager:
     def __init__(self):
-        # 複数の部屋を管理するために辞書を使用します
+        # 複数の部屋を管理するために辞書を使用する
         self.active_connections: Dict[str, List[WebSocket]] = {}
+        
+        #複数の端末情報を管理するために辞書をしようする
+        self.device_data: Dict[str, str] = {}
 
     async def connect(self, websocket: WebSocket, room_id: str):
         await websocket.accept()

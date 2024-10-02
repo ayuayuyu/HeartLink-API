@@ -5,7 +5,10 @@ class filter:
         self.heart = '0'  # 初期心拍数
         self.heartMax = '0'#心拍数の最大値
         self.heartMin = '1000000'#心拍数の最小値
-        self.roomId = "0"
+        self.roomId = "0"#roomIdの取得
+        self.deviceId_1= "null"
+        self.deviceId_2= "null"
+        self.count = 0
         
     #心拍数のセット
     def set_heart(self, heart_value: str):
@@ -31,6 +34,24 @@ class filter:
     
     def get_roomId(self):
         return self.roomId
+    
+    def get_count(self):
+        return self.count
+    
+    def set_count(self,value:int):
+        self.count = value    
+        
+    def set_deviceId_1(self, deviceId: str):
+        self.deviceId_1 = deviceId
+        
+    def get_deviceId_1(self):
+        return self.deviceId_1
+    
+    def set_deviceId_2(self, deviceId: str):
+        self.deviceId_2 = deviceId
+        
+    def get_deviceId_2(self):
+        return self.deviceId_2
     
     #最大値比較
     def max(self, heart_value: str):
