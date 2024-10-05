@@ -10,3 +10,6 @@ class Reset(BaseModel):
     
 class Device(BaseModel):
     id: str
+    
+class Status(BaseModel):
+    status: str
