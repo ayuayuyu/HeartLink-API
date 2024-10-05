@@ -8,6 +8,7 @@ from src.WsManager import WsManager
 from src.filter import filter
 from src.models import Datas
 from src.models import Device
+from src.models import Status
 
 app = FastAPI()
 manager = WsManager()
@@ -27,7 +28,7 @@ async def get():
     return HTMLResponse("Hello World!")
 
 @app.post("/id")
-# デバイスのIDを取得するエンドポイント
+# デバイスのIDを受け取るエンドポイント
 async def id_endpoint(device:Device):
     #一つ目のデバイスIDを取得する
     if filters.get_count() == 0 :
@@ -40,6 +41,19 @@ async def id_endpoint(device:Device):
         filters.set_deviceId_2(device.id)
         filters.set_count(2)
         return {"player": "2"}
+    
+@app.post("/status")
+# 状態によって返すことを変える
+async def ok_endpoint(data: Status):
+    printf(f"status: {data.status}")
+    if data.status == "ok":
+        return {"status": "start"}
+    elif data.status == "start":
+        return {"status": "start"}
+    elif data.status == "end":
+        return {"status": "end"}
+    
+    
         
 @app.post("/data")
 #それぞれの心拍数を取得するエンドポイント
