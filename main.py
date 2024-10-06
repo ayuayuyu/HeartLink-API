@@ -27,36 +27,17 @@ app.add_middleware(
 async def get():
     return HTMLResponse("Hello World!")
 
-@app.post("/id")
-# デバイスのIDを受け取るエンドポイント
-async def id_endpoint(device:Device):
-    #一つ目のデバイスIDを取得する
-    if filters.get_count() == 0 :
-        filters.set_deviceId_1(device.id)
-        print(f"id1: {device.id}")
-        filters.set_count(1)
-        return {"player": "1"}
-    #二つ目のデバイスIDを取得する
-    elif filters.get_count() == 1:
-        filters.set_deviceId_2(device.id)
-        filters.set_count(2)
-        print(f"id2: {device.id}")
-        return {"player": "2"}
+@app.post("/reset")
+async def reset_endpoint(reset: Reset):
+    manager.set_heart(reset.value)
+    manager.set_heartMax(reset.value)
+    await manager.broadcast(manager.get_heart(),'12345')
+    print(f"heartMax: {manager.get_heartMax()} , heartRate: {manager.get_heart()}")
     
-@app.post("/status")
-# 状態によって返すことを変える
-async def ok_endpoint(data: Status):
-    print("Status: リクエスト")
-    print(f"status: {data.status}")
-    if data.status == "ok":
-        return {"status": "ok"}
-    elif data.status == "start":
-        return {"status": "start"}
-    elif data.status == "end":
-        return {"status": "end"}
-    
-    
-        
+@app.post("/max")
+async def max_endpoint():
+    return manager.get_heartMax()
+
 @app.post("/data")
 #それぞれの心拍数を取得するエンドポイント
 async def data_endpoint(data: Datas):
