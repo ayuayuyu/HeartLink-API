@@ -33,13 +33,14 @@ async def id_endpoint(device:Device):
     #一つ目のデバイスIDを取得する
     if filters.get_count() == 0 :
         filters.set_deviceId_1(device.id)
-        print(f"id: {device.id}")
+        print(f"id1: {device.id}")
         filters.set_count(1)
         return {"player": "1"}
     #二つ目のデバイスIDを取得する
     elif filters.get_count() == 1:
         filters.set_deviceId_2(device.id)
         filters.set_count(2)
+        print(f"id2: {device.id}")
         return {"player": "2"}
     
 @app.post("/status")
