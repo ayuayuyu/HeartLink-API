@@ -46,7 +46,7 @@ async def id_endpoint(device:Device):
 @app.post("/status")
 # 状態によって返すことを変える
 async def ok_endpoint(data: Status):
-    printf(f"status: {data.status}")
+    print(f"status: {data.status}")
     if data.status == "ok":
         return {"status": "ok"}
     elif data.status == "start":
