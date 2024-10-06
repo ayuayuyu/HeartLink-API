@@ -21,12 +21,6 @@ class WsManager:
         if not self.active_connections[room_id]:  # もし部屋に接続が無ければ部屋を削除
             del self.active_connections[room_id]
 
-    # async def broadcast(self, message: str, room_id: str):
-    #     for connection in self.active_connections.get(room_id, []):
-    #         try:
-    #             await connection.send_text(message)
-    #         except:
-    #             self.active_connections.remove(connection)
     async def broadcast(self, message: str, room_id: str):
         for connection in self.active_connections.get(room_id, []):
             try:
