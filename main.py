@@ -43,16 +43,35 @@ async def id_endpoint(device:Device):
         print(f"id2: {device.id}")
         return {"player": "2"}
     
+    
+@app.post("/connect")
+#pixelが繋がったどうか知るためのエンドポイント
+async def connect_endpoint():
+    if filters.get_count() == 0:
+        return {"connect": "0"}
+    elif filters.get_count() == 1:
+        return {"connect": "1"}
+    elif filters.get_count() == 2:
+        return {"connect": "2"}
+    else:
+        return {"connect": "erro"}
+    
 @app.post("/status")
 # 状態によって返すことを変える
 async def ok_endpoint(data: Status):
     print(f"status: {data.status}")
     if data.status == "ok":
+        filters.set_status(data.status)
         return {"status": "ok"}
     elif data.status == "start":
+        filters.set_status(data.status)
         return {"status": "start"}
     elif data.status == "end":
+        filters.set_status(data.status)
         return {"status": "end"}
+    else:
+        #当てはまらないstatusが送られてきたときはerroを返す
+        return {"status": "erro"}
     
     
         
@@ -72,7 +91,11 @@ async def data_endpoint(data: Datas):
     }
     # 全クライアントにメッセージを送信(JSON方式)
     await manager.broadcast(json.dumps(json_data),filters.get_roomId())
-    return {"message":"HartRate"}
+    if filters.get_status() == "continue":
+        return {"status":"continue"}
+    elif filters.get_status() == "end":
+        return {"status":"end"}
+    
 
 
 @app.websocket("/ws/{room_id}")
