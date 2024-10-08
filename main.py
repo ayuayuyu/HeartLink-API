@@ -56,6 +56,10 @@ async def connect_endpoint():
     else:
         return {"connect": "erro"}
     
+@app.post("/reset")
+async def reset_endpoint():
+    filters.set_count("0")
+    
 @app.post("/ok")
 #pixel側から受け取るstatus
 async def connect_start():
