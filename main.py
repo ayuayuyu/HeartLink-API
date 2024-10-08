@@ -48,7 +48,7 @@ async def id_endpoint(device:Device):
 @app.post("/connect")
 #pixelが繋がったどうか知るためのエンドポイント
 async def connect_endpoint():
-    printf(f"count: {filters.get_count()}")
+    print(f"count: {filters.get_count()}")
     if filters.get_count() == 0:
         return {"connect": "0"}
     elif filters.get_count() == 1:
