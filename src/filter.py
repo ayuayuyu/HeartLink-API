@@ -3,13 +3,13 @@ from typing import List
 class filter:
     def __init__(self):
         self.heart = '0'  # 初期心拍数
-        self.heartMax = '0'#心拍数の最大値
-        self.heartMin = '1000000'#心拍数の最小値
+        # self.heartMax = '0'#心拍数の最大値
+        # self.heartMin = '1000000'#心拍数の最小値
         self.roomId = "0"#roomIdの取得
         self.deviceId_1= "null"
         self.deviceId_2= "null"
         self.count = 0
-        self.status = "null"
+        self.status = "continue"
         
     #心拍数のセット
     def set_heart(self, heart_value: str):

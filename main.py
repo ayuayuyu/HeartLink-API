@@ -56,22 +56,48 @@ async def connect_endpoint():
     else:
         return {"connect": "erro"}
     
+@app.post("/ok")
+#pixel側から受け取るstatus
+async def connect_start():
+    filters.set_status("ok")
+    return {"status": "ok"}
+    
+@app.post("/start")
+#フロント側から受け取るstatus
+async def connect_start():
+    filters.set_status("start")
+    return {"status": "start"}
+
+@app.post("/end")
+#フロント側から受け取るstatus
+async def connect_start():
+    filters.set_status("end")
+    return {"status": "end"}
+    
+    
+    
 @app.post("/status")
 # 状態によって返すことを変える
 async def ok_endpoint(data: Status):
     print(f"status: {data.status}")
-    if data.status == "ok":
+    # if data.status == "ok":
+    #     filters.set_status(data.status)
+    #     return {"status": "ok"}
+    # #get_statusがstart（フロント側が準備完了)の時
+    # elif data.status == filters.get_status():
+    #     filters.set_status(data.status)
+    #     return {"status": "start"}
+    # #get_statusがend（フロント側が準備完了)の時
+    # elif data.status == filters.get_status():
+    #     filters.set_status(data.status)
+    #     return {"status": "end"}
+    
+    if data.status == filters.get_status():
         filters.set_status(data.status)
-        return {"status": "ok"}
-    elif data.status == "start":
-        filters.set_status(data.status)
-        return {"status": "start"}
-    elif data.status == "end":
-        filters.set_status(data.status)
-        return {"status": "end"}
+        return {"status": filters.get_status()}
     else:
         #当てはまらないstatusが送られてきたときはerroを返す
-        return {"status": "erro"}
+        return {"status": "continue"}
     
     
         
