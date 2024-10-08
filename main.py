@@ -58,6 +58,7 @@ async def connect_endpoint():
         return {"connect": "erro"}
     
 @app.post("/reset")
+#すべてをリセットするエンドポイント
 async def reset_endpoint():
     filters.set_count("0")
     
@@ -85,24 +86,12 @@ async def connect_start():
 # 状態によって返すことを変える
 async def ok_endpoint(data: Status):
     print(f"status: {data.status}")
-    # if data.status == "ok":
-    #     filters.set_status(data.status)
-    #     return {"status": "ok"}
-    # #get_statusがstart（フロント側が準備完了)の時
-    # elif data.status == filters.get_status():
-    #     filters.set_status(data.status)
-    #     return {"status": "start"}
-    # #get_statusがend（フロント側が準備完了)の時
-    # elif data.status == filters.get_status():
-    #     filters.set_status(data.status)
-    #     return {"status": "end"}
-    
     if data.status == filters.get_status():
         filters.set_status(data.status)
         return {"status": filters.get_status()}
     else:
         #当てはまらないstatusが送られてきたときはerroを返す
-        return {"status": "continue"}
+        return {"status": "iteration"}
     
     
         
@@ -122,8 +111,8 @@ async def data_endpoint(data: Datas):
     }
     # 全クライアントにメッセージを送信(JSON方式)
     await manager.broadcast(json.dumps(json_data),filters.get_roomId())
-    if filters.get_status() == "continue":
-        return {"status":"continue"}
+    if filters.get_status() == "iteration":
+        return {"status":"iteration"}
     elif filters.get_status() == "end":
         return {"status":"end"}
     
