@@ -30,6 +30,7 @@ async def get():
 @app.post("/id")
 # デバイスのIDを受け取るエンドポイント
 async def id_endpoint(device:Device):
+    print("device", device)
     #一つ目のデバイスIDを取得する
     if filters.get_count() == 0 :
         filters.set_deviceId_1(device.id)
