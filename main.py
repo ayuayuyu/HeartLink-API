@@ -17,7 +17,7 @@ filters = filter()
 # CORSの設定を追加
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # すべてのオリジンを許可する場合
+    allow_origins="*",  # すべてのオリジンを許可する場合
     allow_credentials=True,
     allow_methods=["*"],  # すべてのHTTPメソッドを許可 (GET, POSTなど)
     allow_headers=["*"],  # すべてのHTTPヘッダーを許可
@@ -85,16 +85,18 @@ async def connect_start():
     
     
     
-@app.post("/status")
+@app.get("/status")
 # 状態によって返すことを変える
 async def ok_endpoint(data: Status):
     print(f"status: {data.status}")
     print(f"get_status: {filters.get_status()}")
     if data.status == filters.get_status():
         filters.set_status(data.status)
+        print(f"{"status": filters.get_status()}")
         return {"status": filters.get_status()}
     else:
         #当てはまらないstatusが送られてきたときはerroを返す
+        print(f"{"status : iteration"}")
         return {"status": "iteration"}
     
     
@@ -116,8 +118,10 @@ async def data_endpoint(data: Datas):
     # 全クライアントにメッセージを送信(JSON方式)
     await manager.broadcast(json.dumps(json_data),filters.get_roomId())
     if filters.get_status() == "iteration":
+        print("iteration")
         return {"status":"iteration"}
     elif filters.get_status() == "end":
+        print("end")
         return {"status":"end"}
     
 
