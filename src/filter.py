@@ -9,7 +9,7 @@ class filter:
         self.deviceId_1= "null"
         self.deviceId_2= "null"
         self.count = 0
-        self.status = "continue"
+        self.status = "iteration"
         
     #心拍数のセット
     def set_heart(self, heart_value: str):
