@@ -85,7 +85,7 @@ async def connect_start():
     
     
     
-@app.get("/status")
+@app.post("/status")
 # 状態によって返すことを変える
 async def ok_endpoint(data: Status):
     print(f"status: {data.status}")
