@@ -92,11 +92,11 @@ async def ok_endpoint(data: Status):
     print(f"get_status: {filters.get_status()}")
     if data.status == filters.get_status():
         filters.set_status(data.status)
-        print(f"{{'status': {filters.get_status()}}}")
+        print(f"{filters.get_status()}")
         return {"status": filters.get_status()}
     else:
         #当てはまらないstatusが送られてきたときはerroを返す
-        print(f"{"status : iteration"}")
+        print("status : iteration")
         return {"status": "iteration"}
     
     
