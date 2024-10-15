@@ -58,26 +58,29 @@ async def connect_endpoint():
     else:
         return {"connect": "erro"}
     
-@app.post("/reset")
+@app.get("/reset")
 #フロント側から受け取るstatus
 # すべてをリセットするエンドポイント
 async def reset_endpoint():
     filters.set_count(0)
     return {"status": "reset"}
     
-@app.post("/ok")
+@app.get("/ok")
 #pixel側から受け取るstatus
 async def connect_start():
-    filters.set_status("ok")
+    count = filters.get_okCount() + 1
+    filters.set_okCount(count)
+    if filters.get_okCount() == 2:
+        filters.set_status("ok")
     return {"status": "ok"}
     
-@app.post("/start")
+@app.get("/start")
 #フロント側から受け取るstatus
 async def connect_start():
     filters.set_status("start")
     return {"status": "start"}
 
-@app.post("/end")
+@app.get("/end")
 #フロント側から受け取るstatus
 async def connect_start():
     filters.set_status("end")

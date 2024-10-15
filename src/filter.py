@@ -10,6 +10,7 @@ class filter:
         self.deviceId_2= "null"
         self.count = 0
         self.status = "iteration"
+        self.okCount = 0
         
     #心拍数のセット
     def set_heart(self, heart_value: str):
@@ -60,6 +61,11 @@ class filter:
     def get_status(self):
         return self.status
     
+    def get_okCount(self):
+        return self.okCount
+    
+    def set_okCount(self,value:int):
+        self.okCount = value  
     #最大値比較
     def max(self, heart_value: str):
         try:
