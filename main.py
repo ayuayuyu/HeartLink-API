@@ -62,7 +62,7 @@ async def connect_endpoint():
 #フロント側から受け取るstatus
 # すべてをリセットするエンドポイント
 async def reset_endpoint():
-    filters.set_count(0)
+    filters.allReset()
     return {"status": "reset"}
     
 @app.get("/ok")
