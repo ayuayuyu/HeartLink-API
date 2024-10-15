@@ -45,7 +45,7 @@ async def id_endpoint(device:Device):
         return {"player": "2"}
     
     
-@app.post("/connect")
+@app.get("/connect")
 #pixelが繋がったどうか知るためのエンドポイント
 async def connect_endpoint():
     print(f"count: {filters.get_count()}")
