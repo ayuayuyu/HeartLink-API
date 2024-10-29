@@ -9,6 +9,9 @@ from src.filter import filter
 from src.models import Datas
 from src.models import Device
 from src.models import Status
+from src.models import PlayerName
+from src.models import Players
+
 
 app = FastAPI()
 manager = WsManager()
@@ -28,8 +31,10 @@ async def get():
     return HTMLResponse("Hello World!")
 
 @app.post("/id")
-# デバイスのIDを受け取るエンドポイント
 async def id_endpoint(device:Device):
+    """
+    デバイスのIDを受け取るエンドポイント
+    """
     print("device", device)
     #一つ目のデバイスIDを取得する
     if filters.get_count() == 0 :
@@ -43,11 +48,12 @@ async def id_endpoint(device:Device):
         filters.set_count(2)
         print(f"id2: {device.id}")
         return {"player": "2"}
-    
-    
+     
 @app.get("/connect")
-#pixelが繋がったどうか知るためのエンドポイント
 async def connect_endpoint():
+    """
+    pixelが繋がったどうか知るためのエンドポイント
+    """
     print(f"count: {filters.get_count()}")
     if filters.get_count() == 0:
         return {"connect": "0"}
@@ -59,15 +65,19 @@ async def connect_endpoint():
         return {"connect": "erro"}
     
 @app.get("/reset")
-#フロント側から受け取るstatus
-# すべてをリセットするエンドポイント
 async def reset_endpoint():
+    """
+    フロント側から受け取るstatus
+    すべてをリセットするエンドポイント
+    """
     filters.allReset()
     return {"status": "reset"}
     
 @app.get("/ok")
-#pixel側から受け取るstatus
 async def connect_start():
+    """
+    pixel側から受け取るstatus
+    """
     count = filters.get_okCount() + 1
     filters.set_okCount(count)
     if filters.get_okCount() == 2:
@@ -75,22 +85,28 @@ async def connect_start():
     return {"status": "ok"}
     
 @app.get("/start")
-#フロント側から受け取るstatus
 async def connect_start():
+    """
+    フロント側から受け取るstatus
+    """
     filters.set_status("start")
     return {"status": "start"}
 
 @app.get("/end")
-#フロント側から受け取るstatus
 async def connect_start():
+    """
+    フロント側から受け取るstatus
+    """
     filters.set_status("end")
     return {"status": "end"}
     
     
     
 @app.post("/status")
-# 状態によって返すことを変える
 async def ok_endpoint(data: Status):
+    """
+    状態によって返すことを変える
+    """
     print(f"status: {data.status}")
     print(f"get_status: {filters.get_status()}")
     if data.status == filters.get_status():
@@ -102,6 +118,33 @@ async def ok_endpoint(data: Status):
         print("status : iteration")
         return {"status": "iteration"}
     
+@app.post("/sendname")
+async def name_endpoint(data: PlayerName):
+    """
+    フロント側から名前とplayer番号を受け取るエンドポイント
+    """
+    print(f"getName: {data.name} getPlayer: {data.player}")
+    if (data.player == "1"):
+        filters.set_deviceId_1(data.name)
+        return {"player1": data.name}
+    elif(data.player == "2"):
+        filters.set_deviceId_2(data.name)
+        return {"player2": data.name}
+    else:
+        return {"erro": data.name}
+
+@app.post("/getname")
+async def name_endpoint(data: Players):
+    """
+    pixel側に名前を送るエンドポイント
+    """
+    print(f"getPlayer: {data.player}")
+    if (data.player == "1"):
+        return {"player1": filters.get_deviceId_1()}
+    elif(data.player == "2"):
+        return {"player2": filters.get_deviceId_2()}
+    else:
+        return {"player": "erro"}
     
         
 @app.post("/data")
@@ -109,13 +152,13 @@ async def ok_endpoint(data: Status):
 async def data_endpoint(data: Datas):
     print(f"心拍数: {data.heartRate}")
     #それぞれのデバイスIDと心拍をdictで一つにまとめる
-    manager.device_data[data.id]= data.heartRate
+    manager.device_data[data.player]= data.heartRate
     
     #JSON方式
     json_data = {
-        "id1": filters.get_deviceId_1(),
+        "player1": filters.get_deviceId_1(),
         "heartRate1": manager.device_data.get(filters.get_deviceId_1()),
-        "id2": filters.get_deviceId_2(),
+        "player2": filters.get_deviceId_2(),
         "heartRate2": manager.device_data.get(filters.get_deviceId_2()),
     }
     # 全クライアントにメッセージを送信(JSON方式)
