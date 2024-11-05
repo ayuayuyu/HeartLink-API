@@ -3,12 +3,16 @@ from typing import List
 class filter:
     def __init__(self):
         self.heart = '0'  # 初期心拍数
-        self.roomId = "0"#roomIdの取得
+        self.name1= "null"
+        self.name2= "null"
         self.deviceId_1= "null"
         self.deviceId_2= "null"
         self.count = 0
         self.status = "iteration"
         self.okCount = 0
+        self.indexCount1 = 0
+        self.indexCount2 = 0
+        self.topicId = []
         
     #心拍数のセット
     def set_heart(self, heart_value: str):
@@ -17,11 +21,15 @@ class filter:
     def get_heart(self):
         return self.heart
     
-    def set_roomId(self, room_id:str):
-        self.roomId = room_id
-    
-    def get_roomId(self):
-        return self.roomId
+    def get_topicId(self):
+        return self.topicId
+
+    def set_topicId(self, index, value):
+        # 必要に応じてリストの長さを拡張
+        while len(self.topicId) <= index:
+            self.topicId.append([])  # 空のリストを追加
+        self.topicId[index].append(value)  # 指定インデックスに値を追加
+
     
     def get_count(self):
         return self.count
@@ -55,9 +63,13 @@ class filter:
     
     def allReset(self):
         self.heart = '0'  # 初期心拍数
-        self.roomId = "0"#roomIdの取得
+        self.name1= "null"
+        self.name2= "null"
         self.deviceId_1= "null"
         self.deviceId_2= "null"
         self.count = 0
         self.status = "iteration"
         self.okCount = 0
+        self.indexCount1 = 0
+        self.indexCount2 = 0
+        self.topicId = []

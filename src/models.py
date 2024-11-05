@@ -20,3 +20,8 @@ class PlayerName(BaseModel):
     
 class Players(BaseModel):
     player: str
+    id: int
+    
+class Names(BaseModel):
+    player: str
+    name: str

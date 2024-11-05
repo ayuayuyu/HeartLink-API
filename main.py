@@ -133,18 +133,52 @@ async def name_endpoint(data: PlayerName):
     else:
         return {"erro": data.name}
 
-@app.post("/getname")
-async def name_endpoint(data: Players):
+@app.post("/name")
+async def name_endpoint(data: Names):
     """
-    pixel側に名前を送るエンドポイント
+    名前を受け取るエンドポイント
     """
-    print(f"getPlayer: {data.player}")
-    if (data.player == "1"):
-        return {"player1": filters.get_deviceId_1()}
-    elif(data.player == "2"):
-        return {"player2": filters.get_deviceId_2()}
+    if data.player == "1":
+        filters.set_name1(data.name)
+        print(f"name: {filters.get_name1()}")
+        return {"name": {filters.get_name1()}}
+    elif data.player == "2":
+        filters.set_name2(data.name)
+        print(f"name: {filters.get_name2()}")
+        return {"name": {filters.get_name2()}}
     else:
-        return {"player": "erro"}
+        return {"name": "erro"}
+    
+@app.post("/topicId")
+async def topicId_endpoint(data:Players):
+    if data.player == "1":
+        if filters.get_indexCount1() == 0:
+            filters.set_topicId(0,data.id)
+            filters.set_indexCount1(1)
+            return {"id" : {data.id}}
+        elif filters.get_indexCount1() == 1:
+            filters.set_topicId(2,data.id)
+            filters.set_indexCount1(2)
+            return {"id" : {data.id}}
+        else:
+            return {"id": "erro"}
+    elif data.player == "2":
+        if filters.get_indexCount2() == 0:
+            filters.set_topicId(1,data.id)
+            filters.set_indexCount2(1)
+            return {"id" : {data.id}}
+        elif filters.get_indexCount2() == 1:
+            filters.set_topicId(3,data.id)
+            filters.set_indexCount2(2)
+            return {"id" : {data.id}}
+        else:
+            return {"id": "erro"}
+    else:
+        return{"player": "erro"}
+
+@app.get("/getName")
+async def getName_endpoint():
+    return {"player1": {filters.get_name1()} ,"player2": {filters.get_name2()}}
     
         
 @app.post("/data")
@@ -173,10 +207,9 @@ async def data_endpoint(data: Datas):
     
 
 
-@app.websocket("/ws/{room_id}")
-async def websocket_endpoint(websocket: WebSocket, room_id: str):
-    filters.set_roomId(room_id)
-    await manager.connect(websocket, room_id)
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
     try:
         while True:
             # クライアントからのメッセージ受信
@@ -189,6 +222,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str):
                 "heartRate2": data,
             }
             # ルーム内の全クライアントにブロードキャスト(JSON形式)
-            await manager.broadcast(json.dumps(json_data), room_id)
+            await manager.broadcast(json.dumps(json_data))
     except WebSocketDisconnect:
-        manager.disconnect(websocket, room_id)
+        manager.disconnect(websocket)
