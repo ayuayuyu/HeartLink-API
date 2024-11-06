@@ -11,6 +11,7 @@ from src.models import Device
 from src.models import Status
 from src.models import PlayerName
 from src.models import Players
+from src.models import Names
 
 
 app = FastAPI()
