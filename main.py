@@ -195,6 +195,7 @@ async def data_endpoint(data: Datas):
         "heartRate1": manager.device_data.get(filters.get_deviceId_1()),
         "player2": filters.get_deviceId_2(),
         "heartRate2": manager.device_data.get(filters.get_deviceId_2()),
+        "topicId": filters.get_topicId(),
     }
     # 全クライアントにメッセージを送信(JSON方式)
     await manager.broadcast(json.dumps(json_data),filters.get_roomId())
