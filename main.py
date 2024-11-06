@@ -221,6 +221,7 @@ async def websocket_endpoint(websocket: WebSocket):
                 "heartRate1": data,
                 "id2": filters.get_deviceId_2(),
                 "heartRate2": data,
+                "topicId": filters.get_topicId(),
             }
             # ルーム内の全クライアントにブロードキャスト(JSON形式)
             await manager.broadcast(json.dumps(json_data))
