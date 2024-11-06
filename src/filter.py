@@ -14,6 +14,15 @@ class filter:
         self.indexCount2 = 0
         self.topicId = []
         
+        
+    def get_indexCount1(self):
+        return self.indexCount1
+    def set_indexCount1(self,value):
+        self.indexCount1 = value
+    def get_indexCount2(self):
+        return self.indexCount2
+    def set_indexCount2(self,value):
+        self.indexCount2 = value
     #心拍数のセット
     def set_heart(self, heart_value: str):
         self.heart = heart_value

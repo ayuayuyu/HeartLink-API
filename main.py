@@ -157,10 +157,6 @@ async def topicId_endpoint(data:Players):
             filters.set_topicId(0,data.id)
             filters.set_indexCount1(1)
             return {"id" : {data.id}}
-        elif filters.get_indexCount1() == 1:
-            filters.set_topicId(2,data.id)
-            filters.set_indexCount1(2)
-            return {"id" : {data.id}}
         else:
             return {"id": "erro"}
     elif data.player == "2":
@@ -168,14 +164,15 @@ async def topicId_endpoint(data:Players):
             filters.set_topicId(1,data.id)
             filters.set_indexCount2(1)
             return {"id" : {data.id}}
-        elif filters.get_indexCount2() == 1:
-            filters.set_topicId(3,data.id)
-            filters.set_indexCount2(2)
-            return {"id" : {data.id}}
         else:
             return {"id": "erro"}
     else:
         return{"player": "erro"}
+    
+@app.get("/resetTopicId")
+async def resetTopicId_endpoint():
+    filters.set_indexCount1(0)
+    filters.set_indexCount2(0)
 
 @app.get("/getName")
 async def getName_endpoint():
