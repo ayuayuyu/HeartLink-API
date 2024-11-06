@@ -153,6 +153,7 @@ async def name_endpoint(data: Names):
 @app.post("/topicId")
 async def topicId_endpoint(data:Players):
     if data.player == "1":
+        print(f"player:{data.player}")
         if filters.get_indexCount1() == 0:
             filters.set_topicId(0,data.id)
             filters.set_indexCount1(1)
@@ -160,6 +161,7 @@ async def topicId_endpoint(data:Players):
         else:
             return {"id": "erro"}
     elif data.player == "2":
+        print(f"player:{data.player}")
         if filters.get_indexCount2() == 0:
             filters.set_topicId(1,data.id)
             filters.set_indexCount2(1)
@@ -173,6 +175,7 @@ async def topicId_endpoint(data:Players):
 async def resetTopicId_endpoint():
     filters.set_indexCount1(0)
     filters.set_indexCount2(0)
+    return {"status: reset"}
 
 @app.get("/getName")
 async def getName_endpoint():
