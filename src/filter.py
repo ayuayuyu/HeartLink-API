@@ -14,7 +14,28 @@ class filter:
         self.indexCount2 = 0
         self.topicId = []
         
+    def get_topicId(self):
+        return self.topicId
+
+    def set_topicId(self, index, value):
+        # 必要に応じてリストの長さを拡張
+        while len(self.topicId) <= index:
+            self.topicId.append([])  # 空のリストを追加
+        self.topicId[index].append(value)  # 指定インデックスに値を追加
+    
+    
+    def set_name1(self, deviceId: str):
+        self.name1 = deviceId
         
+    def get_name1(self):
+        return self.name1
+    
+    def set_name2(self, deviceId: str):
+        self.name2 = deviceId
+        
+    def get_name2(self):
+        return self.name2    
+    
     def get_indexCount1(self):
         return self.indexCount1
     def set_indexCount1(self,value):

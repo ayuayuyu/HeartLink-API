@@ -154,17 +154,21 @@ async def name_endpoint(data: Names):
 async def topicId_endpoint(data:Players):
     if data.player == "1":
         print(f"player:{data.player}")
-        if filters.get_indexCount1() == 0:
+        if data.index == 1:
             filters.set_topicId(0,data.id)
-            filters.set_indexCount1(1)
+            return {"id" : {data.id}}
+        if data.index == 2:
+            filters.set_topicId(2,data.id)
             return {"id" : {data.id}}
         else:
             return {"id": "erro"}
     elif data.player == "2":
         print(f"player:{data.player}")
-        if filters.get_indexCount2() == 0:
+        if data.index == 1:
             filters.set_topicId(1,data.id)
-            filters.set_indexCount2(1)
+            return {"id" : {data.id}}
+        if data.index == 2:
+            filters.set_topicId(3,data.id)
             return {"id" : {data.id}}
         else:
             return {"id": "erro"}
@@ -191,9 +195,9 @@ async def data_endpoint(data: Datas):
     
     #JSON方式
     json_data = {
-        "player1": filters.get_deviceId_1(),
+        "player1": filters.get_name1(),
         "heartRate1": manager.device_data.get(filters.get_deviceId_1()),
-        "player2": filters.get_deviceId_2(),
+        "player2": filters.get_name2(),
         "heartRate2": manager.device_data.get(filters.get_deviceId_2()),
         "topicId": filters.get_topicId(),
     }
@@ -218,9 +222,9 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             #JSON形式
             json_data = {
-                "id1": filters.get_deviceId_1(),
+                "id1": filters.get_name1(),
                 "heartRate1": data,
-                "id2": filters.get_deviceId_2(),
+                "id2": filters.get_name2(),
                 "heartRate2": data,
                 "topicId": filters.get_topicId(),
             }
