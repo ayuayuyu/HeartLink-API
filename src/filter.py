@@ -18,9 +18,6 @@ class filter:
         return self.topicId
 
     def set_topicId(self, index, value):
-        # 必要に応じてリストの長さを拡張
-        while len(self.topicId) <= index:
-            self.topicId.append([])  # 空のリストを追加
         self.topicId[index].append(value)  # 指定インデックスに値を追加
     
     
