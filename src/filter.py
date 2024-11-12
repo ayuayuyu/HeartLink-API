@@ -48,16 +48,6 @@ class filter:
     def get_heart(self):
         return self.heart
     
-    def get_topicId(self):
-        return self.topicId
-
-    def set_topicId(self, index, value):
-        # 必要に応じてリストの長さを拡張
-        while len(self.topicId) <= index:
-            self.topicId.append([])  # 空のリストを追加
-        self.topicId[index].append(value)  # 指定インデックスに値を追加
-
-    
     def get_count(self):
         return self.count
     
