@@ -222,9 +222,9 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             #JSON形式
             json_data = {
-                "id1": filters.get_name1(),
+                "player1": filters.get_name1(),
                 "heartRate1": data,
-                "id2": filters.get_name2(),
+                "player2": filters.get_name2(),
                 "heartRate2": data,
                 "topicId": filters.get_topicId(),
             }
