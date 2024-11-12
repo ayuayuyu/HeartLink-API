@@ -68,7 +68,7 @@ async def connect_endpoint():
 @app.get("/reset")
 async def reset_endpoint():
     """
-    フロント側から受け取るstatus
+    resetのstatusを受け取る（フロント側）
     すべてをリセットするエンドポイント
     """
     filters.allReset()
@@ -77,7 +77,8 @@ async def reset_endpoint():
 @app.get("/ok")
 async def connect_start():
     """
-    pixel側から受け取るstatus
+    okのstatusを受け取る（フロント側）
+    statusをokに変更するエンドポイント
     """
     count = filters.get_okCount() + 1
     filters.set_okCount(count)
@@ -88,7 +89,8 @@ async def connect_start():
 @app.get("/start")
 async def connect_start():
     """
-    フロント側から受け取るstatus
+    startのstatusを受け取る（フロント側）
+    statusをstartに変更するエンドポイント
     """
     filters.set_status("start")
     return {"status": "start"}
@@ -96,7 +98,8 @@ async def connect_start():
 @app.get("/end")
 async def connect_start():
     """
-    フロント側から受け取るstatus
+    endのstatusを受け取る（フロント側）
+    statusをendに変更するエンドポイント
     """
     filters.set_status("end")
     return {"status": "end"}
@@ -106,7 +109,7 @@ async def connect_start():
 @app.post("/status")
 async def ok_endpoint(data: Status):
     """
-    状態によって返すことを変える
+    状態を管理するエンドポイント（フロント側）
     """
     print(f"status: {data.status}")
     print(f"get_status: {filters.get_status()}")
@@ -122,7 +125,7 @@ async def ok_endpoint(data: Status):
 @app.post("/sendname")
 async def name_endpoint(data: PlayerName):
     """
-    フロント側から名前とplayer番号を受け取るエンドポイント
+    フロント側から名前とplayer番号を受け取るエンドポイント（フロント側）
     """
     print(f"getName: {data.name} getPlayer: {data.player}")
     if (data.player == "1"):
@@ -134,24 +137,27 @@ async def name_endpoint(data: PlayerName):
     else:
         return {"erro": data.name}
 
-@app.post("/name")
-async def name_endpoint(data: Names):
-    """
-    名前を受け取るエンドポイント
-    """
-    if data.player == "1":
-        filters.set_name1(data.name)
-        print(f"name: {filters.get_name1()}")
-        return {"name": {filters.get_name1()}}
-    elif data.player == "2":
-        filters.set_name2(data.name)
-        print(f"name: {filters.get_name2()}")
-        return {"name": {filters.get_name2()}}
-    else:
-        return {"name": "erro"}
+# @app.post("/name")
+# async def name_endpoint(data: Names):
+#     """
+#     名前を受け取るエンドポイント
+#     """
+#     if data.player == "1":
+#         filters.set_name1(data.name)
+#         print(f"name: {filters.get_name1()}")
+#         return {"name": {filters.get_name1()}}
+#     elif data.player == "2":
+#         filters.set_name2(data.name)
+#         print(f"name: {filters.get_name2()}")
+#         return {"name": {filters.get_name2()}}
+#     else:
+#         return {"name": "erro"}
     
 @app.post("/topicId")
 async def topicId_endpoint(data:Players):
+    """
+    お題のidを取得するエンドポイント（フロント側）
+    """
     if data.player == "1":
         print(f"player:{data.player}")
         if data.index == 0:
@@ -183,12 +189,17 @@ async def resetTopicId_endpoint():
 
 @app.get("/getName")
 async def getName_endpoint():
+    """
+    名前を取得するエンドポイント（フロント側）
+    """
     return {"player1": {filters.get_name1()} ,"player2": {filters.get_name2()}}
     
         
 @app.post("/data")
-#それぞれの心拍数を取得するエンドポイント
 async def data_endpoint(data: Datas):
+    """
+    それぞれの心拍数を取得するエンドポイント（バック側）
+    """
     print(f"心拍数: {data.heartRate}")
     #それぞれのデバイスIDと心拍をdictで一つにまとめる
     manager.device_data[data.player]= data.heartRate
@@ -215,6 +226,9 @@ async def data_endpoint(data: Datas):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    """
+    WebSocket通信をするエンドポイント（フロント側）
+    """
     await manager.connect(websocket)
     try:
         while True:
