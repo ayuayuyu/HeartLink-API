@@ -154,7 +154,7 @@ async def name_endpoint(data: Names):
 async def topicId_endpoint(data:Players):
     if data.player == "1":
         print(f"player:{data.player}")
-        if data.index == 1:
+        if data.index == 0:
             filters.set_topicId(0,data.id)
             return {"id" : {data.id}}
         if data.index == 2:
@@ -167,7 +167,7 @@ async def topicId_endpoint(data:Players):
         if data.index == 1:
             filters.set_topicId(1,data.id)
             return {"id" : {data.id}}
-        if data.index == 2:
+        if data.index == 3:
             filters.set_topicId(3,data.id)
             return {"id" : {data.id}}
         else:
