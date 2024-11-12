@@ -202,7 +202,7 @@ async def data_endpoint(data: Datas):
         "topicId": filters.get_topicId(),
     }
     # 全クライアントにメッセージを送信(JSON方式)
-    await manager.broadcast(json.dumps(json_data),filters.get_roomId())
+    await manager.broadcast(json.dumps(json_data))
     print(f"get_status: {filters.get_status()}")
     if filters.get_status() == "iteration":
         print("iteration")
