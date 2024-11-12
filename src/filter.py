@@ -12,14 +12,13 @@ class filter:
         self.okCount = 0
         self.indexCount1 = 0
         self.indexCount2 = 0
-        self.topicId = []
+        self.topicId = [[] for _ in range(4)]
         
     def get_topicId(self):
         return self.topicId
 
     def set_topicId(self, index, value):
         self.topicId[index].append(value)  # 指定インデックスに値を追加
-    
     
     def set_name1(self, deviceId: str):
         self.name1 = deviceId
