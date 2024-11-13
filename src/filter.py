@@ -12,7 +12,8 @@ class filter:
         self.okCount = 0
         self.indexCount1 = 0
         self.indexCount2 = 0
-        self.topicId = [[] for _ in range(4)]
+        # self.topicId = [[] for _ in range(4)]
+        self.topicId = ["0","0","0","0"]
         
     def get_topicId(self):
         return self.topicId
@@ -23,7 +24,7 @@ class filter:
     def set_topic(self, index: int, value: str):
         # インデックスがリストの範囲内かどうかをチェック
         if 0 <= index < len(self.topic):
-            self.topicId[index].append(value) 
+            self.topicId[index]= value
         else:
             print(f"Error: index {index} is out of range.")
             
