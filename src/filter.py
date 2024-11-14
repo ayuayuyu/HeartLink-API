@@ -13,7 +13,7 @@ class filter:
         self.indexCount1 = 0
         self.indexCount2 = 0
         # self.topicId = [[] for _ in range(4)]
-        self.topicId = ["0","0","0","0"]
+        self.topicId = [0,0,0,0]
         
     def get_topicId(self):
         return self.topicId
@@ -96,4 +96,4 @@ class filter:
         self.okCount = 0
         self.indexCount1 = 0
         self.indexCount2 = 0
-        self.topicId = ["0","0","0","0"]
+        self.topicId = [0,0,0,0]
