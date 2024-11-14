@@ -129,10 +129,10 @@ async def name_endpoint(data: PlayerName):
     """
     print(f"getName: {data.name} getPlayer: {data.player}")
     if (data.player == "1"):
-        filters.set_deviceId_1(data.name)
+        filters.set_name1(data.name)
         return {"player1": data.name}
     elif(data.player == "2"):
-        filters.set_deviceId_2(data.name)
+        filters.set_name2(data.name)
         return {"player2": data.name}
     else:
         return {"erro": data.name}
