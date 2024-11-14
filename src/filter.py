@@ -96,4 +96,4 @@ class filter:
         self.okCount = 0
         self.indexCount1 = 0
         self.indexCount2 = 0
-        self.topicId = []
+        self.topicId = ["0","0","0","0"]
