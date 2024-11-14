@@ -21,10 +21,10 @@ class filter:
     # def set_topicId(self, index, value):
     #     self.topicId[index].append(value)  # 指定インデックスに値を追加
     
-    def set_topic(self, index: int, value: str):
+    def set_topicId(self, index: int, value: str):
         # インデックスがリストの範囲内かどうかをチェック
-        if 0 <= index < len(self.topic):
-            self.topicId[index]= value
+        if 0 <= index < len(self.topicId):
+            self.topicId[index] = value
         else:
             print(f"Error: index {index} is out of range.")
             
