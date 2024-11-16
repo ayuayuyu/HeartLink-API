@@ -11,7 +11,7 @@ from src.models import Device
 from src.models import Status
 from src.models import PlayerName
 from src.models import Players
-from src.models import Names
+from src.models import Array
 
 
 app = FastAPI()
@@ -136,22 +136,6 @@ async def name_endpoint(data: PlayerName):
         return {"player2": data.name}
     else:
         return {"erro": data.name}
-
-# @app.post("/name")
-# async def name_endpoint(data: Names):
-#     """
-#     名前を受け取るエンドポイント
-#     """
-#     if data.player == "1":
-#         filters.set_name1(data.name)
-#         print(f"name: {filters.get_name1()}")
-#         return {"name": {filters.get_name1()}}
-#     elif data.player == "2":
-#         filters.set_name2(data.name)
-#         print(f"name: {filters.get_name2()}")
-#         return {"name": {filters.get_name2()}}
-#     else:
-#         return {"name": "erro"}
     
 @app.post("/topicId")
 async def topicId_endpoint(data:Players):
@@ -190,6 +174,32 @@ async def resetTopicId_endpoint():
 async def resetTopicId_endpoint():
     filters.set_indexCount(filters.get_indexCount()+1)
     return {"status: index"}
+
+@app.post("/topicArray")
+async def topicArray_endpoint(array:Array):
+    if array.index == 0:
+        filters.set_topicArray1(array.index,array.array1)
+        filters.set_topicArray2(array.index,array.array2)
+        return {"array1": array.array1, "array2": array.array2}
+    elif array.index == 1:
+        filters.set_topicArray1(array.index,array.array1)
+        filters.set_topicArray2(array.index,array.array2)
+        return {"array1": array.array1, "array2": array.array2}
+    elif array.index == 2:
+        filters.set_topicArray1(array.index,array.array1)
+        filters.set_topicArray2(array.index,array.array2)
+        return {"array1": array.array1, "array2": array.array2}
+    elif array.index == 3:
+        filters.set_topicArray1(array.index,array.array1)
+        filters.set_topicArray2(array.index,array.array2)
+        return {"array1": array.array1, "array2": array.array2}
+    else:
+        return{"array": "erro"}
+    
+@app.get("/getTopicArray")
+async def getTopicArray_endpoint():
+    return {"array1": {"0":filters.get_topicArray1(0),"1":filters.get_topicArray1(1),"2":filters.get_topicArray1(2),"3":filters.get_topicArray1(3)}, "array2": {"0":filters.get_topicArray2(0),"1":filters.get_topicArray2(1),"2":filters.get_topicArray2(2),"3":filters.get_topicArray2(3)}}
+    
 
 @app.get("/getName")
 async def getName_endpoint():

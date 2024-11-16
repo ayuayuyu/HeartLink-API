@@ -14,13 +14,28 @@ class filter:
         self.indexCount2 = 0
         # self.topicId = [[] for _ in range(4)]
         self.topicId = [0,0,0,0]
-        
+        self.topicArray1 = [[],[],[],[]]
+        self.topicArray2 = []
     def get_topicId(self):
         return self.topicId
 
     # def set_topicId(self, index, value):
     #     self.topicId[index].append(value)  # 指定インデックスに値を追加
     
+    def get_topicArray1(self, index:int):
+        return self.topicArray1[index] # インデックスが範囲外の場合、デフォルト値として None を返す
+
+    def set_topicArray1(self, index:int, value:list):
+        # 必要に応じてリストの長さを拡張
+        self.topicArray1[index]= value  # 指定インデックスに値を追加
+        
+    def get_topicArray2(self,index:int):
+        return self.topicArray2[index]
+
+    def set_topicArray2(self,index:int, value:list):
+        # 必要に応じてリストの長さを拡張
+        self.topicArray2[index] = value  # 指定インデックスに値を追加
+        
     def set_topicId(self, index: int, value: str):
         # インデックスがリストの範囲内かどうかをチェック
         if 0 <= index < len(self.topicId):
@@ -97,3 +112,5 @@ class filter:
         self.indexCount1 = 0
         self.indexCount2 = 0
         self.topicId = [0,0,0,0]
+        self.topicArray1 = []
+        self.topicArray2 = []
