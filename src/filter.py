@@ -10,7 +10,7 @@ class filter:
         self.count = 0
         self.status = "iteration"
         self.okCount = 0
-        self.indexCount1 = 0
+        self.indexCount = 0
         self.indexCount2 = 0
         # self.topicId = [[] for _ in range(4)]
         self.topicId = [0,0,0,0]
@@ -40,10 +40,10 @@ class filter:
     def get_name2(self):
         return self.name2    
     
-    def get_indexCount1(self):
-        return self.indexCount1
-    def set_indexCount1(self,value):
-        self.indexCount1 = value
+    def get_indexCount(self):
+        return self.indexCount
+    def set_indexCount(self,value):
+        self.indexCount = value
     def get_indexCount2(self):
         return self.indexCount2
     def set_indexCount2(self,value):

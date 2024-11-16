@@ -183,9 +183,13 @@ async def topicId_endpoint(data:Players):
     
 @app.get("/resetTopicId")
 async def resetTopicId_endpoint():
-    filters.set_indexCount1(0)
-    filters.set_indexCount2(0)
+    filters.set_indexCount(0)
     return {"status: reset"}
+
+@app.get("/indexTopicId")
+async def resetTopicId_endpoint():
+    filters.set_indexCount(filters.get_indexCount()+1)
+    return {"status: index"}
 
 @app.get("/getName")
 async def getName_endpoint():
@@ -211,6 +215,7 @@ async def data_endpoint(data: Datas):
         "player2": filters.get_name2(),
         "heartRate2": manager.device_data.get(filters.get_deviceId_2()),
         "topicId": filters.get_topicId(),
+        "index" : filters.get_indexCount(),
     }
     # 全クライアントにメッセージを送信(JSON方式)
     await manager.broadcast(json.dumps(json_data))
