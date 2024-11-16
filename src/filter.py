@@ -15,7 +15,7 @@ class filter:
         # self.topicId = [[] for _ in range(4)]
         self.topicId = [0,0,0,0]
         self.topicArray1 = [[],[],[],[]]
-        self.topicArray2 = []
+        self.topicArray2 = [[],[],[],[]]
     def get_topicId(self):
         return self.topicId
 
