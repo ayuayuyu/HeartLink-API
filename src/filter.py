@@ -59,10 +59,6 @@ class filter:
         return self.indexCount
     def set_indexCount(self,value):
         self.indexCount = value
-    def get_indexCount2(self):
-        return self.indexCount2
-    def set_indexCount2(self,value):
-        self.indexCount2 = value
     #心拍数のセット
     def set_heart(self, heart_value: str):
         self.heart = heart_value
