@@ -109,8 +109,7 @@ class filter:
         self.count = 0
         self.status = "iteration"
         self.okCount = 0
-        self.indexCount1 = 0
-        self.indexCount2 = 0
+        self.indexCount = 0
         self.topicId = [0,0,0,0]
         self.topicArray1 = []
         self.topicArray2 = []
