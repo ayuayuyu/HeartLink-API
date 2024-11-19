@@ -32,3 +32,7 @@ class Array(BaseModel):
     index : int
     array1 : list[str]
     array2 : list[str]
+    
+class indexTopics(BaseModel):
+    index: int
+    player: str

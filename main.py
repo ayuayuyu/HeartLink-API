@@ -12,6 +12,7 @@ from src.models import Status
 from src.models import PlayerName
 from src.models import Players
 from src.models import Array
+from src.models import indexTopics
 
 
 app = FastAPI()
@@ -171,9 +172,23 @@ async def resetTopicId_endpoint():
     return {"status: reset"}
 
 @app.get("/indexTopicId")
-async def resetTopicId_endpoint():
-    filters.set_indexCount(filters.get_indexCount()+1)
-    return {"status: index"}
+async def resetTopicId_endpoint(data: indexTopics):
+    if filters.get_indexStatus() == data.index:
+        if filters.get_indexCounts() == 2:
+            filters.set_indexCount(filters.get_indexCount()+1)
+            filters.set_indexStatus(filters.get_indexStatus()+1)
+            print(f"indexCount: {filters.get_indexCount()}, indexCounts: {filters.get_indexCounts()}")
+        elif filters.get_indexCounts() == 0 or filters.get_indexCounts() == 1:
+            if data.player == "1":
+                filters.set_indexCounts(filters.get_indexCounts()+1)
+                return {"status": "player1_count"}
+            elif data.player == "2":
+                filters.set_indexCounts(filters.get_indexCounts()+1)
+                return {"status": "player2_count"}
+        else:
+            return {"status": "index count erro"}
+    else:
+        return{"status": "Not fount topicIndex"}
 
 @app.post("/topicArray")
 async def topicArray_endpoint(array:Array):

@@ -11,7 +11,8 @@ class filter:
         self.status = "iteration"
         self.okCount = 0
         self.indexCount = 0
-        self.indexCount2 = 0
+        self.indexCounts = 0
+        self.indexStatus = 0
         # self.topicId = [[] for _ in range(4)]
         self.topicId = [0,0,0,0]
         self.topicArray1 = [[],[],[],[]]
@@ -59,6 +60,16 @@ class filter:
         return self.indexCount
     def set_indexCount(self,value):
         self.indexCount = value
+        
+    def get_indexCounts(self):
+        return self.indexCounts
+    def set_indexCounts(self,value):
+        self.indexCounts = value
+        
+    def get_indexStatus(self):
+        return self.indexStatus
+    def set_indexStatus(self,value):
+        self.indexStatus = value
     #心拍数のセット
     def set_heart(self, heart_value: str):
         self.heart = heart_value
