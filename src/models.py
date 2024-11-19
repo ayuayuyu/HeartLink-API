@@ -29,9 +29,9 @@ class Names(BaseModel):
     name: str
     
 class Array(BaseModel):
+    player: str
     index : int
-    array1 : list[str]
-    array2 : list[str]
+    array : list[str]
     
 class indexTopics(BaseModel):
     index: int
