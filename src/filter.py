@@ -110,9 +110,10 @@ class filter:
     def set_topicArrays(self,player:str,index:int,array:list):
         if player == "1":
             self.set_topicArray1(index,array)
+            return {"player":player,"index": index,"array": array}
         elif player == "2":
             self.set_topicArray2(index,array)
-        return {"player":player,"index": index,"array": array}
+            return {"player":player,"index": index,"array": array}
     
     def allReset(self):
         self.heart = '0'  # 初期心拍数
