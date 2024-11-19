@@ -194,12 +194,16 @@ async def resetTopicId_endpoint(data: indexTopics):
 async def topicArray_endpoint(array:Array):
     if array.index == 0:
         filters.set_topicArrays(array.player,array.index,array.array)
+        return {"player":array.player,"index": array.index,"array": array.array}
     elif array.index == 1:
         filters.set_topicArrays(array.player,array.index,array.array)
+        return {"player":array.player,"index": array.index,"array": array.array}
     elif array.index == 2:
         filters.set_topicArrays(array.player,array.index,array.array)
+        return {"player":array.player,"index": array.index,"array": array.array}
     elif array.index == 3:
         filters.set_topicArrays(array.player,array.index,array.array)
+        return {"player":array.player,"index": array.index,"array": array.array}
     else:
         return{"array": "erro"}
     
