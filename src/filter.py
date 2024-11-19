@@ -124,6 +124,11 @@ class filter:
         self.status = "iteration"
         self.okCount = 0
         self.indexCount = 0
+        self.indexCounts = 0
+        self.indexStatus = 0
+        # self.topicId = [[] for _ in range(4)]
         self.topicId = [0,0,0,0]
-        self.topicArray1 = []
-        self.topicArray2 = []
+        self.topicArray1 = [[],[],[],[]]
+        self.topicArray2 = [[],[],[],[]]
+    def get_topicId(self):
+        return self.topicId
