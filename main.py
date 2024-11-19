@@ -171,7 +171,7 @@ async def resetTopicId_endpoint():
     filters.set_indexCount(0)
     return {"status: reset"}
 
-@app.get("/indexTopicId")
+@app.post("/indexTopicId")
 async def resetTopicId_endpoint(data: indexTopics):
     if filters.get_indexStatus() == data.index:
         if filters.get_indexCounts() == 2:
