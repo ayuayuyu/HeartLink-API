@@ -119,6 +119,7 @@ class filter:
         if self.get_indexCounts() == 2:
             self.set_indexCount(self.get_indexCount()+1)
             self.set_indexStatus(self.get_indexStatus()+1)
+            self.set_indexCounts(0)
             print(f"indexCount: {self.get_indexCount()}, indexCounts: {self.get_indexCounts()}")
     
     def allReset(self):
