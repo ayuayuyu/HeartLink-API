@@ -114,6 +114,12 @@ class filter:
         elif player == "2":
             self.set_topicArray2(index,array)
             print(f"player:{player},index: {index},array: {array}")
+            
+    def set_indexs(self) :
+        if self.get_indexCounts() == 2:
+            self.set_indexCount(self.get_indexCount()+1)
+            self.set_indexStatus(self.get_indexStatus()+1)
+            print(f"indexCount: {self.get_indexCount()}, indexCounts: {self.get_indexCounts()}")
     
     def allReset(self):
         self.heart = '0'  # 初期心拍数

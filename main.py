@@ -174,17 +174,14 @@ async def resetTopicId_endpoint():
 @app.post("/indexTopicId")
 async def resetTopicId_endpoint(data: indexTopics):
     if filters.get_indexStatus() == data.index:
-        if filters.get_indexCounts() == 2:
-            filters.set_indexCount(filters.get_indexCount()+1)
-            filters.set_indexStatus(filters.get_indexStatus()+1)
-            print(f"indexCount: {filters.get_indexCount()}, indexCounts: {filters.get_indexCounts()}")
-            return {"indexCount": {filters.get_indexCount()}, "indexCounts": {filters.get_indexCounts()}}
-        elif filters.get_indexCounts() == 0 or filters.get_indexCounts() == 1:
+        if filters.get_indexCounts() == 0 or filters.get_indexCounts() == 1:
             if data.player == "1":
                 filters.set_indexCounts(filters.get_indexCounts()+1)
+                filters.set_indexs()
                 return {"status": "player1_count"}
             elif data.player == "2":
                 filters.set_indexCounts(filters.get_indexCounts()+1)
+                filters.set_indexs()
                 return {"status": "player2_count"}
         else:
             return {"status": "index count erro"}
