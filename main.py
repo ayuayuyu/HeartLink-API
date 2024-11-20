@@ -178,6 +178,7 @@ async def resetTopicId_endpoint(data: indexTopics):
             filters.set_indexCount(filters.get_indexCount()+1)
             filters.set_indexStatus(filters.get_indexStatus()+1)
             print(f"indexCount: {filters.get_indexCount()}, indexCounts: {filters.get_indexCounts()}")
+            return {"indexCount": {filters.get_indexCount()}, "indexCounts": {filters.get_indexCounts()}}
         elif filters.get_indexCounts() == 0 or filters.get_indexCounts() == 1:
             if data.player == "1":
                 filters.set_indexCounts(filters.get_indexCounts()+1)
