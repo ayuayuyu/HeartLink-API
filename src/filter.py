@@ -131,5 +131,3 @@ class filter:
         self.topicId = [0,0,0,0]
         self.topicArray1 = [[],[],[],[]]
         self.topicArray2 = [[],[],[],[]]
-    def get_topicId(self):
-        return self.topicId
