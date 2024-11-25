@@ -238,13 +238,12 @@ async def data_endpoint(data: Datas):
     }
     # 全クライアントにメッセージを送信(JSON方式)
     print(f"get_status: {filters.get_status()}")
-    if filters.get_status() == "iteration":
-        await manager.broadcast(json.dumps(json_data))
-        print("iteration")
-        return {"status":"iteration"}
-    elif filters.get_status() == "end":
+    if filters.get_status() == "end":
         print("end")
         return {"status":"end"}
+    else:
+        await manager.broadcast(json.dumps(json_data))
+        return {"status":"iteration"}
     
 
 
