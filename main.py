@@ -237,9 +237,9 @@ async def data_endpoint(data: Datas):
         "index" : filters.get_indexCount(),
     }
     # 全クライアントにメッセージを送信(JSON方式)
-    await manager.broadcast(json.dumps(json_data))
     print(f"get_status: {filters.get_status()}")
     if filters.get_status() == "iteration":
+        await manager.broadcast(json.dumps(json_data))
         print("iteration")
         return {"status":"iteration"}
     elif filters.get_status() == "end":
