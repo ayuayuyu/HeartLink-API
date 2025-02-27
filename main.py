@@ -6,14 +6,7 @@ import json
 
 from src.WsManager import WsManager
 from src.filter import filter
-from src.models import Datas
-from src.models import Device
-from src.models import Status
-from src.models import PlayerName
-from src.models import Players
-from src.models import Array
-from src.models import indexTopics
-
+from src.models import Datas,Device,Status,PlayerName,Players,Array,indexTopics
 
 app = FastAPI()
 manager = WsManager()
@@ -75,26 +68,26 @@ async def reset_endpoint():
     filters.allReset()
     return {"status": "reset"}
     
-@app.get("/ok")
-async def connect_start():
-    """
-    okのstatusを受け取る（フロント側）
-    statusをokに変更するエンドポイント
-    """
-    count = filters.get_okCount() + 1
-    filters.set_okCount(count)
-    if filters.get_okCount() == 2:
-        filters.set_status("ok")
-    return {"status": "ok"}
+# @app.get("/ok")
+# async def connect_start():
+#     """
+#     okのstatusを受け取る（フロント側）
+#     statusをokに変更するエンドポイント
+#     """
+#     count = filters.get_okCount() + 1
+#     filters.set_okCount(count)
+#     if filters.get_okCount() == 2:
+#         filters.set_status("ok")
+#     return {"status": "ok"}
     
-@app.get("/start")
-async def connect_start():
-    """
-    startのstatusを受け取る（フロント側）
-    statusをstartに変更するエンドポイント
-    """
-    filters.set_status("start")
-    return {"status": "start"}
+# @app.get("/start")
+# async def connect_start():
+#     """
+#     startのstatusを受け取る（フロント側）
+#     statusをstartに変更するエンドポイント
+#     """
+#     filters.set_status("start")
+#     return {"status": "start"}
 
 @app.get("/end")
 async def connect_start():
@@ -165,14 +158,12 @@ async def topicId_endpoint(data:Players):
             return {"id": "erro"}
     else:
         return{"player": "erro"}
-    
-@app.get("/resetTopicId")
-async def resetTopicId_endpoint():
-    filters.set_indexCount(0)
-    return {"status: reset"}
+
 
 @app.post("/indexTopicId")
 async def resetTopicId_endpoint(data: indexTopics):
+    """
+    """
     if filters.get_indexStatus() == data.index:
         if filters.get_indexCounts() == 0 or filters.get_indexCounts() == 1:
             if data.player == "1":

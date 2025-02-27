@@ -13,7 +13,6 @@ class filter:
         self.indexCount = 0
         self.indexCounts = 0
         self.indexStatus = 0
-        # self.topicId = [[] for _ in range(4)]
         self.topicId = [0,0,0,0]
         self.topicArray1 = [[],[],[],[]]
         self.topicArray2 = [[],[],[],[]]
